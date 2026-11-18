@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>旧时光 - 藏品详情</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;family=Literata:wght@400;600&amp;family=Bodoni+Moda:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#f8e5d4",
+                      "surface-tint": "#934b19",
+                      "tertiary": "#004662",
+                      "surface-container-highest": "#f2dfce",
+                      "tertiary-fixed": "#c5e7ff",
+                      "surface-container": "#feebd9",
+                      "surface-bright": "#fff8f4",
+                      "on-tertiary-fixed-variant": "#004c6a",
+                      "on-tertiary-container": "#97d7ff",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#ffb68c",
+                      "on-secondary-fixed": "#241a00",
+                      "on-primary-fixed-variant": "#753401",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#001e2d",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#392e23",
+                      "surface": "#fff8f4",
+                      "primary-container": "#8b4513",
+                      "on-primary-fixed": "#321200",
+                      "tertiary-fixed-dim": "#8bcff8",
+                      "surface-container-low": "#fff1e6",
+                      "secondary-fixed-dim": "#e9c349",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#f2dfce",
+                      "on-surface-variant": "#54433a",
+                      "on-primary": "#ffffff",
+                      "surface-dim": "#e9d7c6",
+                      "on-background": "#231a0f",
+                      "outline": "#877369",
+                      "secondary-container": "#fed65b",
+                      "tertiary-container": "#005f83",
+                      "secondary": "#735c00",
+                      "on-surface": "#231a0f",
+                      "primary-fixed": "#ffdbc9",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#ffc29f",
+                      "background": "#fff8f4",
+                      "on-secondary-container": "#745c00",
+                      "on-secondary-fixed-variant": "#574500",
+                      "inverse-on-surface": "#ffeedf",
+                      "outline-variant": "#dac2b6",
+                      "primary": "#6c2f00",
+                      "secondary-fixed": "#ffe088",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#ffb68c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "12px",
+                      "margin-page": "32px",
+                      "stack-lg": "48px",
+                      "gutter-grid": "24px",
+                      "stack-md": "24px",
+                      "touch-target-min": "88px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Source Serif 4", "serif"
+                      ],
+                      "label-bold": [
+                              "Source Serif 4", "serif"
+                      ],
+                      "headline-md": [
+                              "Source Serif 4", "serif"
+                      ],
+                      "note-text": [
+                              "Literata", "serif"
+                      ],
+                      "collection-id": [
+                              "Bodoni Moda", "serif"
+                      ],
+                      "body-md": [
+                              "Source Serif 4", "serif"
+                      ],
+                      "headline-lg": [
+                              "Source Serif 4", "serif"
+                      ],
+                      "body-lg": [
+                              "Source Serif 4", "serif"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-bold": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "note-text": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "collection-id": [
+                              "16px",
+                              {
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.8",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "34px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.8",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        /* Custom texture overlays */
+        .linen-texture {
+            background-color: #fff8f4;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        .parchment-texture {
+            background-color: #fcf6ef;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .gold-border {
+            border: 1px solid #D4AF37;
+        }
+        .spotlight {
+            background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        }
+        .museum-shadow {
+            box-shadow: 0 8px 24px rgba(45,35,24,0.12), 0 2px 4px rgba(45,35,24,0.04);
+        }
+        .inset-engrave {
+            box-shadow: inset 0 2px 4px rgba(45,35,24,0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen antialiased linen-texture pb-touch-target-min">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface border-b border-outline-variant shadow-sm flex items-center justify-between px-margin-page h-touch-target-min">
+<button aria-label="返回" class="w-[48px] h-[48px] flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">藏品详情</h1>
+<div class="w-[48px]"></div> <!-- Spacer for center alignment -->
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-4xl mx-auto px-margin-page py-stack-lg flex flex-col gap-stack-lg relative">
+<!-- Spotlight Effect Background -->
+<div class="absolute inset-0 pointer-events-none spotlight z-0"></div>
+<!-- Featured Image Frame -->
+<section class="relative z-10 w-full flex justify-center">
+<div class="bg-surface-container-lowest p-4 pb-6 museum-shadow gold-border rounded-sm max-w-full lg:max-w-3xl w-full transform hover:-translate-y-1 transition-transform duration-300">
+<div class="relative w-full aspect-[4/3] overflow-hidden gold-border border-opacity-30 bg-surface-container-high">
+<img alt="Vintage black and white photograph of an old bicycle parked against a textured stone wall, evoking a sense of nostalgia." class="w-full h-full object-cover filter sepia-[0.3] contrast-110 brightness-95" data-alt="A beautifully framed, authentic vintage photograph with a rich sepia tone and high archival quality. The scene depicts a quiet, nostalgic moment—an antique bicycle resting against a weathered, heavily textured stone wall in a sunlit European alley. The lighting mimics a warm, precise gallery spotlight, casting soft, deliberate shadows. The overall aesthetic is museum-grade, preserving a timeless, melancholic memory within a pristine digital archive setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFDHUkpPPwa8LLaxidYiv7O7QkgFnbJe0cJtjcAfIzeEg0FGoM0rFGsMNVc2CaM1U1Ewj5QoA4IJYHs8ItCjX1qdnN8b8sRh6u_gY5V0u4qDhAtMKfga-jyZrTDzugpEVAVBdmljll_nOYzkTTF_eIhsNEg3PHq1GTzwdJnh8wLRp9fHkrhqZpyeTj-fxDXR9U0mqT8PpPXWYconBY7Ij7qqrH3AdvWd9Mi6G7I9CPgdDoozu6PqlH9xW7-DtL5K4dJ67t"/>
+</div>
+</div>
+</section>
+<!-- Metadata & Actions Bar -->
+<section class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-stack-md py-stack-sm border-y border-outline-variant/30">
+<div class="flex flex-col items-center sm:items-start">
+<span class="font-collection-id text-collection-id text-on-surface-variant uppercase tracking-widest">OT-2026-001</span>
+<span class="font-body-md text-sm text-on-surface-variant/80 mt-1">入藏日期: 1984年秋</span>
+</div>
+<button class="flex items-center gap-2 bg-surface-container-high hover:bg-surface-variant px-6 py-3 rounded-full border border-outline-variant transition-colors group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<span class="font-label-bold text-label-bold text-primary">聆听录音</span>
+</button>
+</section>
+<!-- Story Section (Parchment) -->
+<section class="relative z-10 parchment-texture p-stack-lg rounded-xl gold-border shadow-md mt-stack-sm">
+<!-- Decorative Pin -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-outline-variant shadow-sm border border-outline"></div>
+<div class="max-w-2xl mx-auto space-y-6">
+<h2 class="font-headline-md text-headline-md text-primary text-center mb-stack-md">那年胡同口的自行车</h2>
+<div class="font-note-text text-note-text text-on-surface leading-relaxed space-y-4">
+<p>
+                        这是爷爷留下的老飞鸽。那时候，这辆车是我们家最值钱的物件儿。每天傍晚，我都在胡同口等他下班，老远就能听到那清脆的车铃声。
+                    </p>
+<p>
+                        车把上的漆早就掉光了，露出底下锃亮的铁皮，那是岁月磨出来的光泽。现在的车再轻便，也骑不出当年的那种安稳感。我把这张照片小心存着，看着它，就好像又闻到了当年胡同里飘出的饭菜香，听见了爷爷那句：“走，回家吃饭喽。”
+                    </p>
+</div>
+</div>
+</section>
+<!-- Certificate Footer -->
+<footer class="relative z-10 flex flex-col items-center justify-center mt-stack-lg pt-stack-lg pb-stack-md border-t border-outline-variant/50">
+<div class="w-16 h-16 rounded-full border-2 border-[#D4AF37] text-[#D4AF37] flex items-center justify-center mb-4 opacity-80">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">verified</span>
+</div>
+<p class="font-headline-md text-sm text-on-surface-variant uppercase tracking-widest text-center">
+                Honorably Collected by OldTime
+            </p>
+<p class="font-body-md text-xs text-on-surface-variant/60 mt-2">
+                旧时光 · 珍藏认证
+            </p>
+</footer>
+</main>
+</body></html>

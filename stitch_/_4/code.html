@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>讲述故事</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..144,400;600;700&amp;family=Literata:opsz,wght@7..72,400&amp;family=Bodoni+Moda:opsz,wght@6..96,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#005f83",
+                        "surface-container-high": "#f8e5d4",
+                        "primary": "#6c2f00",
+                        "on-tertiary-fixed": "#001e2d",
+                        "surface-dim": "#e9d7c6",
+                        "primary-fixed": "#ffdbc9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#f2dfce",
+                        "on-tertiary": "#ffffff",
+                        "background": "#fff8f4",
+                        "secondary-container": "#fed65b",
+                        "on-surface-variant": "#54433a",
+                        "surface": "#fff8f4",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#97d7ff",
+                        "inverse-surface": "#392e23",
+                        "on-tertiary-fixed-variant": "#004c6a",
+                        "on-background": "#231a0f",
+                        "primary-fixed-dim": "#ffb68c",
+                        "secondary": "#735c00",
+                        "inverse-primary": "#ffb68c",
+                        "tertiary-fixed-dim": "#8bcff8",
+                        "surface-container": "#feebd9",
+                        "secondary-fixed-dim": "#e9c349",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#dac2b6",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#745c00",
+                        "inverse-on-surface": "#ffeedf",
+                        "on-primary-fixed-variant": "#753401",
+                        "on-primary-fixed": "#321200",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#ffe088",
+                        "on-surface": "#231a0f",
+                        "error-container": "#ffdad6",
+                        "outline": "#877369",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#ffc29f",
+                        "tertiary-fixed": "#c5e7ff",
+                        "surface-tint": "#934b19",
+                        "surface-bright": "#fff8f4",
+                        "surface-container-low": "#fff1e6",
+                        "surface-container-highest": "#f2dfce",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#8b4513",
+                        "tertiary": "#004662",
+                        "on-secondary-fixed": "#241a00",
+                        "gold": "#D4AF37"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "touch-target-min": "88px",
+                        "stack-lg": "48px",
+                        "margin-page": "32px",
+                        "stack-sm": "12px",
+                        "gutter-grid": "24px"
+                    },
+                    "fontFamily": {
+                        "note-text": ["literata", "serif"],
+                        "headline-md": ["sourceSerifFour", "serif"],
+                        "label-bold": ["sourceSerifFour", "serif"],
+                        "headline-lg-mobile": ["sourceSerifFour", "serif"],
+                        "body-lg": ["sourceSerifFour", "serif"],
+                        "body-md": ["sourceSerifFour", "serif"],
+                        "collection-id": ["bodoniModa", "serif"],
+                        "headline-lg": ["sourceSerifFour", "serif"],
+                        "kaiti": ["KaiTi", "STKaiti", "serif"]
+                    },
+                    "fontSize": {
+                        "note-text": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.5", "fontWeight": "600" }],
+                        "label-bold": ["16px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.4", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.8", "fontWeight": "400" }],
+                        "body-md": ["18px", { "lineHeight": "1.8", "fontWeight": "400" }],
+                        "collection-id": ["16px", { "letterSpacing": "0.1em", "fontWeight": "400" }],
+                        "headline-lg": ["34px", { "lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    },
+                    "animation": {
+                        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                        "typewriter": "typing 2s steps(20, end)",
+                    },
+                    "keyframes": {
+                        "typing": {
+                            "from": { "width": "0" },
+                            "to": { "width": "100%" }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .texture-linen {
+            background-color: #fff8f4;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, rgba(0,0,0,0.02) 1px, rgba(0,0,0,0.02) 2px);
+        }
+        .texture-parchment {
+            background-color: #f8e5d4;
+            background-image: 
+                radial-gradient(circle at 100% 150%, #f2dfce 24%, white 24%, white 28%, #f2dfce 28%, #f2dfce 36%, white 36%, white 40%, transparent 40%, transparent),
+                radial-gradient(circle at 0    150%, #f2dfce 24%, white 24%, white 28%, #f2dfce 28%, #f2dfce 36%, white 36%, white 40%, transparent 40%, transparent),
+                radial-gradient(circle at 50%  100%, white 10%, #f2dfce 10%, #f2dfce 23%, white 23%, white 30%, #f2dfce 30%, #f2dfce 43%, white 43%, white 50%, #f2dfce 50%, #f2dfce 63%, white 63%, white 71%, transparent 71%, transparent),
+                radial-gradient(circle at 100% 50%, white 5%, #f2dfce 5%, #f2dfce 15%, white 15%, white 20%, #f2dfce 20%, #f2dfce 29%, white 29%, white 34%, #f2dfce 34%, #f2dfce 44%, white 44%, white 49%, transparent 49%, transparent),
+                radial-gradient(circle at 0    50%, white 5%, #f2dfce 5%, #f2dfce 15%, white 15%, white 20%, #f2dfce 20%, #f2dfce 29%, white 29%, white 34%, #f2dfce 34%, #f2dfce 44%, white 44%, white 49%, transparent 49%, transparent);
+            background-size: 100px 50px;
+        }
+        .museum-frame {
+            border: 4px solid white;
+            outline: 1px solid #D4AF37;
+            box-shadow: 0 4px 16px rgba(45,35,24,0.08);
+        }
+        .etched-icon {
+            color: #231a0f;
+            text-shadow: 0 0.5px 0 rgba(255,255,255,0.8);
+        }
+        .recording-active .gradient-pulse {
+            animation: pulse-slow 2s infinite;
+        }
+        .gramophone-bg {
+            background-image: radial-gradient(circle, rgba(212,175,55,0.1) 10%, transparent 60%);
+            background-position: center bottom;
+            background-size: 150% 150%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="texture-linen min-h-screen text-on-surface flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm w-full px-margin-page h-touch-target-min flex justify-between items-center z-10 relative">
+<button class="w-[48px] h-[48px] flex items-center justify-center text-primary rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="close">close</span>
+</button>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-primary tracking-widest">讲述故事</h1>
+<div class="w-[48px]"></div> <!-- Spacer -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col w-full max-w-3xl mx-auto relative overflow-hidden">
+<!-- Top Section: Photo and Question (60%) -->
+<div class="flex-1 p-margin-page flex flex-col justify-center items-center relative z-10">
+<!-- Museum Framed Photo -->
+<div class="museum-frame bg-white p-4 mb-stack-md w-full max-w-md transform rotate-[-2deg] transition-transform duration-500 hover:rotate-0">
+<img alt="Vintage photo in frame" class="w-full aspect-[4/3] object-cover border border-outline-variant/30" data-alt="A vintage black and white photograph of an older couple standing in front of a classic 1960s automobile. The photo is slightly faded with warm sepia undertones, evoking a strong sense of nostalgia and personal history. It is mounted inside a thick white archival mat and framed with a thin, delicate gold line, consistent with a high-end museum collection aesthetic. Soft, directional light highlights the texture of the photo paper." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDpOlMBWAwOHdNo6iuZ_mtvdkcmZgYk_38h7Z9s7gQ__aoSERWsckrA_k0qBNt45dvVIw_fGZaJKLfy3FX4XXMTdIxybcHYHnmACvngik11_r83YPFUJ5LVtZx5dDWRVlOHdgwBM5VOnf8uPDaYKBoVwqiuBgCsVsiyFsYX72DC4EUimDNWNz_M-Q-kQUFNGURKGGA5Ha_gJvSF5ea7OxfQBYa3LRf9qUr5evObCfqsm7Qh72QU53aXtndFOxH1zZKI2C8"/>
+</div>
+<!-- Guiding Question Area -->
+<div class="texture-parchment w-full max-w-lg rounded-xl p-stack-md shadow-[0_2px_8px_rgba(45,35,24,0.05)] border border-outline-variant/50 relative overflow-hidden text-center">
+<!-- Subtle Gramophone illustration hint in background -->
+<div class="absolute inset-0 opacity-10 pointer-events-none flex justify-center items-center">
+<span class="material-symbols-outlined text-[120px] text-primary" data-icon="phonograph">stethoscope</span>
+</div>
+<h2 class="text-[26px] font-headline-lg-mobile text-on-background relative z-10">这张照片是在哪里拍的？</h2>
+<!-- Transcription Area (Initially Hidden) -->
+<div class="mt-stack-sm hidden flex flex-col items-center" id="transcription-area">
+<p class="font-kaiti text-body-lg text-surface-tint border-b border-surface-tint/20 pb-2 w-full text-left overflow-hidden whitespace-nowrap border-r-2 border-primary pr-1" id="transcription-text">
+                        那是在一九八二年的秋天，我们去了...
+                    </p>
+<button class="mt-stack-sm flex items-center gap-2 border border-gold rounded-full px-4 py-2 text-on-surface hover:bg-surface-variant transition-colors group">
+<span class="material-symbols-outlined etched-icon group-hover:text-primary transition-colors" data-icon="play_circle">play_circle</span>
+<span class="font-label-bold text-sm">播放原音</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Recording Area (40%) -->
+<div class="h-[353px] min-h-[300px] w-full bg-surface-container-high rounded-t-xl border-t border-outline-variant shadow-[0_-8px_24px_rgba(45,35,24,0.05)] relative flex flex-col items-center justify-center p-margin-page z-20">
+<div class="relative group cursor-pointer flex flex-col items-center touch-none" id="recording-container">
+<!-- Glow Effect -->
+<div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-container to-secondary-container blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-300 gradient-pulse" style="margin: -20px;"></div>
+<!-- Press Area -->
+<button class="relative z-10 w-[140px] h-[140px] rounded-full bg-gradient-to-br from-[#8B4513] to-[#A0522D] shadow-[0_8px_16px_rgba(139,69,19,0.3),inset_0_2px_4px_rgba(255,255,255,0.2)] flex items-center justify-center border-4 border-surface transition-transform duration-200 active:scale-95" id="record-btn">
+<span class="material-symbols-outlined text-[64px] text-white" data-icon="mic" style="font-variation-settings: 'FILL' 1;">mic</span>
+</button>
+<p class="mt-stack-md font-label-bold text-body-lg text-primary text-center">按住这里，慢慢讲</p>
+</div>
+</div>
+</main>
+<script>
+        const recordBtn = document.getElementById('record-btn');
+        const container = document.getElementById('recording-container');
+        const transcriptionArea = document.getElementById('transcription-area');
+        const transcriptionText = document.getElementById('transcription-text');
+        const questionText = document.querySelector('h2');
+
+        let isRecording = false;
+
+        const startRecording = (e) => {
+            e.preventDefault(); // Prevent default touch behaviors
+            if (isRecording) return;
+            isRecording = true;
+            
+            container.classList.add('recording-active');
+            recordBtn.classList.replace('from-[#8B4513]', 'from-secondary-container');
+            recordBtn.classList.replace('to-[#A0522D]', 'to-primary-container');
+            
+            // Haptic feedback if supported
+            if (navigator.vibrate) navigator.vibrate(50);
+        };
+
+        const stopRecording = (e) => {
+            e.preventDefault();
+            if (!isRecording) return;
+            isRecording = false;
+            
+            container.classList.remove('recording-active');
+            recordBtn.classList.replace('from-secondary-container', 'from-[#8B4513]');
+            recordBtn.classList.replace('to-primary-container', 'to-[#A0522D]');
+            
+            // Show transcription
+            questionText.classList.add('text-sm', 'text-on-surface-variant', 'transition-all', 'duration-500');
+            questionText.classList.remove('text-[26px]');
+            transcriptionArea.classList.remove('hidden');
+            
+            // Trigger typewriter effect
+            transcriptionText.style.animation = 'none';
+            transcriptionText.offsetHeight; // trigger reflow
+            transcriptionText.style.animation = 'typing 3s steps(30, end) forwards';
+        };
+
+        recordBtn.addEventListener('mousedown', startRecording);
+        recordBtn.addEventListener('touchstart', startRecording, {passive: false});
+        
+        window.addEventListener('mouseup', stopRecording);
+        window.addEventListener('touchend', stopRecording);
+    </script>
+</body></html>

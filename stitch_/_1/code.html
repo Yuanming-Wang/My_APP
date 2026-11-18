@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>拍摄藏品 - 珍藏瞬间</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#e9c349",
+                    "outline": "#877369",
+                    "on-primary-fixed-variant": "#753401",
+                    "tertiary-container": "#005f83",
+                    "surface-container-low": "#fff1e6",
+                    "inverse-primary": "#ffb68c",
+                    "surface-bright": "#fff8f4",
+                    "secondary-fixed": "#ffe088",
+                    "secondary": "#735c00",
+                    "inverse-on-surface": "#ffeedf",
+                    "secondary-container": "#fed65b",
+                    "outline-variant": "#dac2b6",
+                    "surface-dim": "#e9d7c6",
+                    "on-tertiary-container": "#97d7ff",
+                    "tertiary-fixed-dim": "#8bcff8",
+                    "surface-container-high": "#f8e5d4",
+                    "primary-container": "#8b4513",
+                    "surface": "#fff8f4",
+                    "on-background": "#231a0f",
+                    "tertiary": "#004662",
+                    "on-surface": "#231a0f",
+                    "on-primary-container": "#ffc29f",
+                    "primary": "#6c2f00",
+                    "tertiary-fixed": "#c5e7ff",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#f2dfce",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#ffb68c",
+                    "on-primary-fixed": "#321200",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#934b19",
+                    "primary-fixed": "#ffdbc9",
+                    "on-secondary-fixed": "#241a00",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#feebd9",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#745c00",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#574500",
+                    "on-tertiary-fixed": "#001e2d",
+                    "on-error": "#ffffff",
+                    "background": "#fff8f4",
+                    "inverse-surface": "#392e23",
+                    "surface-container-highest": "#f2dfce",
+                    "on-surface-variant": "#54433a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "gutter-grid": "24px",
+                    "touch-target-min": "88px",
+                    "stack-sm": "12px",
+                    "stack-lg": "48px",
+                    "margin-page": "32px"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "Source Serif 4", "serif"
+                    ],
+                    "body-lg": [
+                            "Source Serif 4", "serif"
+                    ],
+                    "collection-id": [
+                            "Bodoni Moda", "serif"
+                    ],
+                    "note-text": [
+                            "Literata", "serif"
+                    ],
+                    "headline-lg-mobile": [
+                            "Source Serif 4", "serif"
+                    ],
+                    "label-bold": [
+                            "Source Serif 4", "serif"
+                    ],
+                    "headline-md": [
+                            "Source Serif 4", "serif"
+                    ],
+                    "headline-lg": [
+                            "Source Serif 4", "serif"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.8",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "20px",
+                            {
+                                    "lineHeight": "1.8",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "collection-id": [
+                            "16px",
+                            {
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "note-text": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-bold": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "34px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Add a subtle linen texture to the background */
+        body {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        
+        /* Museum frame effect */
+        .museum-frame {
+            border: 4px solid white;
+            box-shadow: 0 4px 16px rgba(45,35,24,0.08), inset 0 0 0 1px #D4AF37;
+        }
+
+        /* Focus reticle corners */
+        .reticle-corner {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-color: #D4AF37;
+            border-width: 0;
+            opacity: 0.8;
+        }
+        .reticle-tl { top: 16px; left: 16px; border-top-width: 2px; border-left-width: 2px; }
+        .reticle-tr { top: 16px; right: 16px; border-top-width: 2px; border-right-width: 2px; }
+        .reticle-bl { bottom: 16px; left: 16px; border-bottom-width: 2px; border-left-width: 2px; }
+        .reticle-br { bottom: 16px; right: 16px; border-bottom-width: 2px; border-right-width: 2px; }
+
+        /* Etched metal shutter button */
+        .shutter-btn {
+            background: linear-gradient(145deg, #e6d8c3, #c5b6a1);
+            box-shadow:  5px 5px 10px #b0a390, -5px -5px 10px #ffeed6;
+            border: 2px solid #8B4513;
+        }
+        .shutter-btn-inner {
+            background: radial-gradient(circle at center, #8B4513 0%, #6c2f00 100%);
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-lg">
+<!-- TopAppBar -->
+<header class="w-full top-0 bg-background flex justify-between items-center px-margin-page h-touch-target-min z-10 relative">
+<button aria-label="返回" class="w-12 h-12 flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="arrow_back" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim tracking-wide">
+            珍藏瞬间
+        </h1>
+<button aria-label="闪光灯" class="w-12 h-12 flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="flashlight_on" style="font-variation-settings: 'FILL' 0;">flashlight_on</span>
+</button>
+</header>
+<!-- Main Viewfinder Area -->
+<main class="flex-grow flex flex-col items-center justify-center px-margin-page relative">
+<!-- Viewfinder Frame -->
+<div class="relative w-full aspect-[3/4] max-h-[574px] rounded-lg overflow-hidden museum-frame bg-surface-variant relative shadow-lg">
+<!-- Simulated Camera Feed / Background -->
+<img alt="Vintage still life setting simulating a camera viewfinder" class="w-full h-full object-cover opacity-90" data-alt="A beautifully composed still life photograph simulating a camera viewfinder perspective. The scene features an antique brass pocket watch resting on a softly lit, textured linen surface next to a stack of faded, handwritten letters. The lighting is warm and directional, evoking a nostalgic, museum-quality atmosphere typical of a tactile, skeuomorphic design style. The colors are rich ochres, muted golds, and deep sepias, aligning with a premium, archival aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqcZnhwWU0Zk-AfAlcRzN4tZKb_Gw82aKYJYCuqmlX8Yaxk7hmYMnuw9oF8bKTcUR6Ss3ewZo2mlEBlFVQmhsbfv3SkF6ptwgoH6M3fifCMxpfxMchyT_JTudq6nuHUo1-6ZLsaxR5AXpDVeRhDVTZ-I0imSqdOjKGbVXtjKb2B1D4zVtmLZW5coxxo5NDy16AZydqqD5nZt_1K2S9YRBbaM5xD-Yg_OshNFMRY1dEBn0pw-zbEFY9nMEgEuQSOrFZ9DA4"/>
+<!-- Focus Reticles -->
+<div class="reticle-corner reticle-tl"></div>
+<div class="reticle-corner reticle-tr"></div>
+<div class="reticle-corner reticle-bl"></div>
+<div class="reticle-corner reticle-br"></div>
+<!-- Central Focus Circle (Optional, for realism) -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-32 h-32 border border-[#D4AF37] rounded-full opacity-30"></div>
+</div>
+</div>
+<!-- Instructional Text -->
+<div class="mt-stack-md text-center">
+<p class="font-note-text text-note-text text-on-surface-variant italic">
+                将镜头对准您的老照片或旧物件
+            </p>
+</div>
+</main>
+<!-- Bottom Controls -->
+<footer class="w-full pb-8 pt-4 px-margin-page flex justify-around items-center bg-background relative z-10">
+<!-- Gallery Thumbnail -->
+<button aria-label="相册" class="w-16 h-16 rounded museum-frame overflow-hidden hover:opacity-80 transition-opacity active:scale-95">
+<img alt="Recent photo thumbnail" class="w-full h-full object-cover" data-alt="A small thumbnail image showing a close-up of a vintage black and white photograph in an ornate frame. The thumbnail itself has a white border and a thin gold outline, matching the museum-frame skeuomorphic style of the app. The colors are muted sepias and warm grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAh7eJdyaBUsTxz3EXyEzsPJsN6XowyZqQBC9Yr-t5j2Y8h7bXRNtCZ7k5Ezpjs-Dte5D9s0T-DrapZgn98j3xNJNk8mXY_JnOIgSQEDllZI8tuRLH4DL4CHvqy0ZJ3xb467P848wVJfopmXdSMSh5yGg809lvotp_ikSCTTtmTs8yNtnYh0-P0F_vs2-V7OsLxP1H1AVrYO05TmvkYMV2kHteuatxsyskUnoe-jk4O9UTUZ2ivRYLCtGJyWEc0qMmtAdzN"/>
+</button>
+<!-- Shutter Button -->
+<button aria-label="拍照" class="w-24 h-24 rounded-full flex items-center justify-center shutter-btn active:scale-95 transition-transform duration-200">
+<div class="w-16 h-16 rounded-full shutter-btn-inner flex items-center justify-center">
+<!-- Inner circle detail -->
+<div class="w-12 h-12 rounded-full border-2 border-primary/30"></div>
+</div>
+</button>
+<!-- Flip Camera -->
+<button aria-label="切换镜头" class="w-16 h-16 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[32px]" data-icon="flip_camera_ios" style="font-variation-settings: 'FILL' 0;">flip_camera_ios</span>
+</button>
+</footer>
+</body></html>

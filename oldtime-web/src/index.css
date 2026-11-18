@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+@import './styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── 基础重置 ── */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { font-family: -apple-system, BlinkMacSystemFont, 'Noto Serif SC', 'PingFang SC', sans-serif; font-size: 16px; line-height: 1.5; color: var(--color-text-primary); background: var(--color-bg-page); -webkit-font-smoothing: antialiased; }
+body { margin: 0; min-height: 100vh; background: var(--color-bg-page); }
+button { cursor: pointer; font: inherit; }
+button:disabled { cursor: not-allowed; }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+::selection { background: var(--color-primary-bg); color: var(--color-primary); }
+
+/* ── 组件 ── */
+@layer components {
+  .input { width: 100%; padding: 12px 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 15px; color: var(--color-text-primary); background: var(--color-bg-card); transition: border-color var(--duration-fast); }
+  .input:focus { border-color: var(--color-primary); outline: none; }
+  .input::placeholder { color: var(--color-text-disabled); }
+  .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s ease-in-out infinite; border-radius: var(--radius-sm); }
+  .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+/* ── 动画 ── */
+@keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes goldShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

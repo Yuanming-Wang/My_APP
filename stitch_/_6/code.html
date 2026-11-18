@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>挑选藏品</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700&amp;family=Literata:opsz,wght@7..72,400;7..72,700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#005f83",
+                        "surface-container-high": "#f8e5d4",
+                        "primary": "#6c2f00",
+                        "on-tertiary-fixed": "#001e2d",
+                        "surface-dim": "#e9d7c6",
+                        "primary-fixed": "#ffdbc9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#f2dfce",
+                        "on-tertiary": "#ffffff",
+                        "background": "#fff8f4",
+                        "secondary-container": "#fed65b",
+                        "on-surface-variant": "#54433a",
+                        "surface": "#fff8f4",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#97d7ff",
+                        "inverse-surface": "#392e23",
+                        "on-tertiary-fixed-variant": "#004c6a",
+                        "on-background": "#231a0f",
+                        "primary-fixed-dim": "#ffb68c",
+                        "secondary": "#735c00",
+                        "inverse-primary": "#ffb68c",
+                        "tertiary-fixed-dim": "#8bcff8",
+                        "surface-container": "#feebd9",
+                        "secondary-fixed-dim": "#e9c349",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#dac2b6",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#745c00",
+                        "inverse-on-surface": "#ffeedf",
+                        "on-primary-fixed-variant": "#753401",
+                        "on-primary-fixed": "#321200",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#ffe088",
+                        "on-surface": "#231a0f",
+                        "error-container": "#ffdad6",
+                        "outline": "#877369",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#ffc29f",
+                        "tertiary-fixed": "#c5e7ff",
+                        "surface-tint": "#934b19",
+                        "surface-bright": "#fff8f4",
+                        "surface-container-low": "#fff1e6",
+                        "surface-container-highest": "#f2dfce",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#8b4513",
+                        "tertiary": "#004662",
+                        "on-secondary-fixed": "#241a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "touch-target-min": "88px",
+                        "stack-lg": "48px",
+                        "margin-page": "32px",
+                        "stack-sm": "12px",
+                        "gutter-grid": "24px"
+                    },
+                    "fontFamily": {
+                        "note-text": ["Literata"],
+                        "headline-md": ["Source Serif 4"],
+                        "label-bold": ["Source Serif 4"],
+                        "headline-lg-mobile": ["Source Serif 4"],
+                        "body-lg": ["Source Serif 4"],
+                        "body-md": ["Source Serif 4"],
+                        "collection-id": ["Bodoni Moda"],
+                        "headline-lg": ["Source Serif 4"]
+                    },
+                    "fontSize": {
+                        "note-text": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "label-bold": ["16px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "1.8", "fontWeight": "400"}],
+                        "body-md": ["18px", {"lineHeight": "1.8", "fontWeight": "400"}],
+                        "collection-id": ["16px", {"letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "headline-lg": ["34px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .museum-texture {
+            background-color: #F8F5EE;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        .photo-frame {
+            border: 4px solid white;
+            box-shadow: 0 4px 16px rgba(45,35,24,0.08);
+            transition: all 0.3s ease;
+        }
+        .photo-frame.selected {
+            border: 3px solid #8b4513;
+            transform: scale(1.05);
+            position: relative;
+        }
+        .photo-frame.selected::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .frame-outline {
+            border: 1px solid #D4AF37;
+        }
+    </style>
+<style data-stitch-css-vh="
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  ">
+    body {
+      min-height: max(884px, 884px);
+    }
+  </style>
+  <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.bottom-0{bottom:0px}.left-0{left:0px}.left-2{left:0.5rem}.top-2{top:0.5rem}.z-50{z-index:50}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.aspect-square{aspect-ratio:1 / 1}.h-12{height:3rem}.h-full{height:100%}.h-touch-target-min{height:88px}.min-h-\[884px\]{min-height:884px}.w-12{width:3rem}.w-full{width:100%}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-gutter-grid{gap:24px}.overflow-hidden{overflow:hidden}.rounded-full{border-radius:9999px}.rounded-sm{border-radius:0.125rem}.rounded-t-xl{border-top-left-radius:3rem;border-top-right-radius:3rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-\[\#D4AF37\]{--tw-border-opacity:1;border-color:rgb(212 175 55 / var(--tw-border-opacity, 1))}.border-outline-variant{--tw-border-opacity:1;border-color:rgb(218 194 182 / var(--tw-border-opacity, 1))}.bg-black\/5{background-color:rgb(0 0 0 / 0.05)}.bg-primary-container{--tw-bg-opacity:1;background-color:rgb(139 69 19 / var(--tw-bg-opacity, 1))}.bg-surface-container\/95{background-color:rgb(254 235 217 / 0.95)}.bg-white\/90{background-color:rgb(255 255 255 / 0.9)}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-primary-container{--tw-gradient-from:#8b4513 var(--tw-gradient-from-position);--tw-gradient-to:rgb(139 69 19 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-\[\#A0522D\]{--tw-gradient-to:#A0522D var(--tw-gradient-to-position)}.object-cover{object-fit:cover}.px-12{padding-left:3rem;padding-right:3rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-margin-page{padding-left:32px;padding-right:32px}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-32{padding-bottom:8rem}.pt-8{padding-top:2rem}.font-collection-id{font-family:Bodoni Moda}.font-headline-lg-mobile{font-family:Source Serif 4}.font-label-bold{font-family:Source Serif 4}.\!text-3xl{font-size:1.875rem !important;line-height:2.25rem !important}.text-2xl{font-size:1.5rem;line-height:2rem}.text-collection-id{font-size:16px;letter-spacing:0.1em;font-weight:400}.text-headline-lg-mobile{font-size:28px;line-height:1.4;font-weight:700}.text-on-primary{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-on-surface{--tw-text-opacity:1;color:rgb(35 26 15 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(108 47 0 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-70{opacity:0.7}.shadow-\[0_-8px_30px_rgba\(45\2c 35\2c 24\2c 0\.12\)\]{--tw-shadow:0 -8px 30px rgba(45,35,24,0.12);--tw-shadow-colored:0 -8px 30px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.grayscale{--tw-grayscale:grayscale(100%);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.duration-500{transition-duration:500ms}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:scale-105{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:bg-transparent{background-color:transparent}@media (min-width: 768px){.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}</style></head>
+<body class="museum-texture min-h-[884px] text-on-surface antialiased pb-32" data-stitch-vh="min-h-[884px]===min-h-screen" data-mode="connect">
+<!-- Header Section -->
+<header class="flex justify-between items-center w-full px-margin-page h-touch-target-min pt-8">
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-primary">挑选几张今天的照片</h1>
+<div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-primary-container text-on-primary font-collection-id text-collection-id shadow-sm">
+            3
+        </div>
+</header>
+<!-- Photo Grid -->
+<main class="px-margin-page mt-8 grid grid-cols-2 md:grid-cols-3 gap-gutter-grid">
+<!-- Selected Photo 1 -->
+<div class="photo-frame selected frame-outline rounded-sm aspect-square relative overflow-hidden cursor-pointer">
+<img alt="Family gathering" class="w-full h-full object-cover" data-alt="A warm, candid photograph of an elderly couple smiling affectionately at a family gathering. The scene is bathed in soft, natural sunlight filtering through a window, creating a gentle and nostalgic atmosphere. The color palette features warm earth tones, deep ochres, and soft whites, aligning with a tactile, museum-quality archive aesthetic. The image feels intimate, historical, and deeply personal." src="https://images.pexels.com/photos/30641697/pexels-photo-30641697.jpeg">
+<div class="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded-sm border border-[#D4AF37] text-primary font-collection-id text-collection-id">
+                1
+            </div>
+<div class="absolute inset-0 border border-[#D4AF37] pointer-events-none rounded-sm"></div>
+</div>
+<!-- Selected Photo 2 -->
+<div class="photo-frame selected frame-outline rounded-sm aspect-square relative overflow-hidden cursor-pointer">
+<img alt="Grandchild playing" class="w-full h-full object-cover" data-alt="A beautifully composed photograph of a young child playing in a garden, capturing a moment of pure joy and discovery. The lighting is golden hour, casting long, soft shadows and highlighting the textures of nature. The color palette emphasizes natural greens, warm browns, and soft sunlight, fitting perfectly into a premium, archival gallery aesthetic. The image conveys a sense of precious, fleeting time." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlIRg2l45piBFMphBrpI49mYDN2OQ8VxO1tkiT-Mf_C_fZvZLbhaHQzNmN_mu3lzE2F4IeLa62aod4bKUv-to6_vo0f57cP-OYmG2lwQRECj6hv_1AWYlGp-r2nUhvUTi6zEfl7D8U-zKs9AUc_w56AJp2B2v9sEy2PQioISGzdvh4lrSV8pAwOPktR11aK4Agn7RJJGmdaR2X7zzLZtMlvi7Snkty72a8le3Bqs3lZPdpY8873cUZMWdXmFG7DJWHBp9X">
+<div class="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded-sm border border-[#D4AF37] text-primary font-collection-id text-collection-id">
+                2
+            </div>
+</div>
+<!-- Selected Photo 3 -->
+<div class="photo-frame selected frame-outline rounded-sm aspect-square relative overflow-hidden cursor-pointer">
+<img alt="Old letters" class="w-full h-full object-cover" data-alt="A close-up, high-quality photograph of handwritten letters and a vintage pocket watch resting on a wooden table. The scene is lit with warm, directional light that emphasizes the texture of the aged paper and the gleam of the metal. The color scheme is rich with sepia, deep browns, and antique golds, creating a strong sense of heritage and timelessness. The image is designed to evoke nostalgia and museum-level preservation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRcPXE652Ikk-deHfp7F2dzHewj8tXfC6qpCxZFi7eu7y3KXCp3Y2klXaL2QDk8ZmGiPSov1REVivQK8nzOKhhbL8LyYWLao9xTn247HDe-VxDgXb96dhfzsNzhdDQNcYJ19tPa5ar6pcfn4bM8rED7P2Wm51Vt0AjIAbo-MTErMV9MLQ1cgV0Q8a6TgWcizCESbKL6yEU-ACadW3D-J2z5-LzbLAAVh1F8RKX3esfKMIiyVtUgMcVnVYoAJ8wjNm_Ciwz">
+<div class="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded-sm border border-[#D4AF37] text-primary font-collection-id text-collection-id">
+                3
+            </div>
+</div>
+<!-- Unselected Photo -->
+<div class="photo-frame frame-outline rounded-sm aspect-square relative overflow-hidden cursor-pointer group">
+<img alt="Landscape" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A serene landscape photograph featuring a tranquil lake at sunset, with soft mist rising from the water. The sky is painted with gentle hues of peach, lavender, and soft gold, reflecting perfectly on the calm surface. The aesthetic is peaceful, elegant, and timeless, suitable for a premium archival collection. The lighting is soft and diffused, creating a painting-like quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8i3LgmSQANxXKNFz-oE5GnD1KJgs22bhf9Rm_ebTon8XUNxPHVTnuHNth6MoYyo8XeVJsi_QlHiD-lquev7jKjVZGcAdmrfwlJnFDXjOHlBnMMSvnmjv6XCmZmus5FVg5GcuYm-8-OIwB1SjrxnH5B7ynsPGxMs9k6sNk2d9_VY-I9vdOkg1DRkJYoGZm5_bSfQLalTV5e23EJsYuI4_-lMFeGSxW6ErdZ4UaiSHS32RpWh-EoQDWkC8sP7HYypp3xymm">
+<div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
+</div>
+<!-- Unselected Photo -->
+<div class="photo-frame frame-outline rounded-sm aspect-square relative overflow-hidden cursor-pointer group">
+<img alt="Vintage items" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A still life arrangement of antique books, a brass magnifying glass, and a delicate porcelain teacup on a lace doily. The lighting is moody and dramatic, with deep shadows and soft highlights that bring out the textures of the old materials. The color palette is muted, focusing on warm whites, rich browns, and tarnished gold, perfectly matching a sophisticated, skeuomorphic museum style. The mood is quiet and reflective." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3ibPS2qrjZX5imL6mi4OGzo3dYYNOrYgpQ8LT9oemQfbIxz6yTcMbqQpQ08Rb6yBby-gwmfclv0KJnqo9dRsUjBDkdQUGB5HR2qhTlZDHNS9Nh1BJpFRQTbqS8kZ9VquRUCTiRWHv4BVhxQACsCwsKXHrRRX0Yf1fbkwy_cI6eFUrwwrfyToZw8b7XmQlwzD_JYggTQ_bVarzPwtK-BdtOEZlyVgTumwN2YxrnZ9idxKkcZ36Ni7_-tLMc7FXSmMTAuY7">
+<div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
+</div>
+<!-- Unselected Photo (Grayscale for > 12) - Simulating the effect for demonstration -->
+<div class="photo-frame frame-outline rounded-sm aspect-square relative overflow-hidden cursor-pointer group grayscale opacity-70">
+<img alt="Nature path" class="w-full h-full object-cover" data-alt="A photograph of a winding nature path through an old-growth forest, rendered in soft grayscale. The dappled sunlight filtering through the canopy creates a strong contrast between light and shadow. The image feels like a classic, historical silver gelatin print, fitting perfectly into a curated, tactile archive. The mood is mysterious yet inviting, emphasizing the passage of time." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDingcOji_90fDifcFYX-5o33nvkUnhji5d1HF032e_YrxOX0cJo7yiFnqfzN1SKOHPGyIU3N2LhZleYDjjcBebHaCZnF2H21HG-yjQ6mrP1IqtKYZ-e28PIBOkl0LEj-g2LRIjVkNtDidQcX9uG_m8jniWVU0QRJApvAOl26QnVaBPunHE_E4fcklhKkNxKWW4Q5zS5eJiy-iUXtk-9vVl5HqhA35r_BEloU6_x6rLp9-YmGRq8pjdDVgUx6NNeMrZi5-x">
+</div>
+</main>
+<!-- Floating Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container/95 backdrop-blur-md border-t border-outline-variant px-margin-page py-6 flex items-center justify-between shadow-[0_-8px_30px_rgba(45,35,24,0.12)] z-50 rounded-t-xl">
+<!-- Thumbnails -->
+
+<!-- Action Button -->
+<button class="ml-4 shrink-0 bg-gradient-to-r from-primary-container to-[#A0522D] text-on-primary rounded-full font-label-bold shadow-md active:scale-95 transition-transform flex items-center gap-2 px-12 py-6 text-2xl">
+<span class="material-symbols-outlined !text-3xl" style="font-variation-settings: &quot;FILL&quot; 1;">account_balance</span>
+            入馆
+        </button>
+</div>
+
+
+</body></html>

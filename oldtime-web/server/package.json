@@ -1,0 +1,20 @@
+{
+  "name": "oldtime-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@peculiar/x509": "^2.0.0",
+    "better-sqlite3": "^11.9.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "multer": "^2.0.1",
+    "node-forge": "^1.4.0",
+    "selfsigned": "^5.5.0",
+    "sharp": "^0.34.2",
+    "uuid": "^11.1.0"
+  }
+}

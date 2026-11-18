@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>生成 APP 图标</title>
+</head>
+<body>
+  <h1>旧时光 APP 图标生成器</h1>
+  <p>右键点击下方图片，选择"图片另存为"保存为 PNG 文件。</p>
+  
+  <h2>192x192 图标</h2>
+  <canvas id="canvas192" width="192" height="192"></canvas>
+  
+  <h2>512x512 图标</h2>
+  <canvas id="canvas512" width="512" height="512"></canvas>
+  
+  <script>
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      const r = size * 0.15; // 圆角
+      
+      // 背景渐变
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#6C2F00');
+      gradient.addColorStop(1, '#8B4513');
+      
+      // 绘制圆角矩形
+      ctx.beginPath();
+      ctx.moveTo(r, 0);
+      ctx.lineTo(size - r, 0);
+      ctx.quadraticCurveTo(size, 0, size, r);
+      ctx.lineTo(size, size - r);
+      ctx.quadraticCurveTo(size, size, size - r, size);
+      ctx.lineTo(r, size);
+      ctx.quadraticCurveTo(0, size, 0, size - r);
+      ctx.lineTo(0, r);
+      ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // 装饰圆
+      ctx.beginPath();
+      ctx.arc(size/2, size*0.43, size*0.23, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+      ctx.lineWidth = size * 0.008;
+      ctx.stroke();
+      
+      // 文字
+      ctx.fillStyle = '#D4AF37';
+      ctx.font = `bold ${size*0.31}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('忆', size/2, size*0.45);
+      
+      // 底部文字
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.font = `${size*0.07}px sans-serif`;
+      ctx.fillText('旧时光', size/2, size*0.74);
+      
+      // 装饰线
+      ctx.beginPath();
+      ctx.moveTo(size*0.3, size*0.62);
+      ctx.lineTo(size*0.7, size*0.62);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+      ctx.lineWidth = size * 0.004;
+      ctx.stroke();
+    }
+    
+    drawIcon(document.getElementById('canvas192'), 192);
+    drawIcon(document.getElementById('canvas512'), 512);
+  </script>
+</body>
+</html>
