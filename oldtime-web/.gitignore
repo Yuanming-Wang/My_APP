@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# server runtime
+server/data/
+server/uploads/
+*.pem
+.env
+.env.*
+!.env.example

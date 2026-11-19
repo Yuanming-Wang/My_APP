@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from './Button'
 import { draftsApi } from '../../lib/api'
+import { uploadDraftMedia } from '../../lib/media'
 import { useStore } from '../../hooks/useStore'
 
 interface Child {
@@ -97,19 +98,22 @@ export function HelpModal({ open, onClose }: HelpModalProps) {
   }
 
   const createDraftAndShare = async (child: Child, shareMethod: 'sms' | 'copy') => {
-    if (draftMedia.length === 0) {
-      alert('请先选择照片或视频再求助孩子。')
+    const photos = draftMedia.filter((media) => media.type === 'image')
+    if (photos.length === 0) {
+      alert('协作编辑目前仅支持照片，请先选择照片再求助孩子。')
       return
     }
 
     try {
       setCreating(true)
 
-      // 创建协作草稿
-      const res = await draftsApi.create(
-        ownerName || '家人',
-        draftMedia.map((m) => ({ imageUrl: m.dataUrl, story: m.story }))
-      )
+      const uploadedPhotos: Array<{ imageUrl: string; story: string }> = []
+      for (const media of photos) {
+        const uploaded = await uploadDraftMedia(media)
+        uploadedPhotos.push({ imageUrl: uploaded.url, story: media.story })
+      }
+
+      const res = await draftsApi.create(ownerName || '家人', uploadedPhotos)
 
       const draftId = res.data.id
       const helpUrl = `${window.location.origin}${window.location.pathname}#/help/${draftId}`

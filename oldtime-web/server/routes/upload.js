@@ -3,118 +3,172 @@ import multer from 'multer'
 import sharp from 'sharp'
 import { v4 as uuid } from 'uuid'
 import { join, extname } from 'path'
-import { mkdirSync, existsSync, writeFileSync } from 'fs'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { mkdirSync, writeFileSync } from 'fs'
+import db from '../db.js'
+import { uploadsDir } from '../lib/paths.js'
+import { registerAsset } from '../services/assets.js'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const uploadsDir = join(__dirname, '..', 'uploads')
 const thumbsDir = join(uploadsDir, 'thumbs')
+const videosDir = join(uploadsDir, 'videos')
+const audiosDir = join(uploadsDir, 'audios')
 
-if (!existsSync(uploadsDir)) mkdirSync(uploadsDir, { recursive: true })
-if (!existsSync(thumbsDir)) mkdirSync(thumbsDir, { recursive: true })
+for (const dir of [uploadsDir, thumbsDir, videosDir, audiosDir]) {
+  mkdirSync(dir, { recursive: true })
+}
 
-const storage = multer.memoryStorage()
-const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+const imageUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-    if (allowed.includes(file.mimetype)) {
-      cb(null, true)
-    } else {
-      cb(new Error('Only images are allowed'))
-    }
+    if (allowed.includes(file.mimetype)) return cb(null, true)
+    cb(Object.assign(new Error('Only images are allowed'), { status: 400 }))
+  },
+})
+
+const videoUpload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, videosDir),
+    filename: (_req, file, cb) => {
+      const id = uuid()
+      file.assetId = id
+      cb(null, `${id}${extname(file.originalname).toLowerCase() || '.mp4'}`)
+    },
+  }),
+  limits: { fileSize: 200 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith('video/')) return cb(null, true)
+    cb(Object.assign(new Error('Only videos are allowed'), { status: 400 }))
+  },
+})
+
+const audioUpload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, audiosDir),
+    filename: (_req, file, cb) => {
+      const id = uuid()
+      file.assetId = id
+      cb(null, `${id}${extname(file.originalname).toLowerCase() || '.webm'}`)
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith('audio/')) return cb(null, true)
+    cb(Object.assign(new Error('Only audio is allowed'), { status: 400 }))
   },
 })
 
 const router = Router()
 
-// POST /api/upload — 上传图片
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/video', videoUpload.single('video'), (req, res) => {
+  if (!req.file) return res.status(400).json({ success: false, error: 'No video uploaded' })
+
+  const url = `/uploads/videos/${req.file.filename}`
+  registerAsset(db, req.ownerId, {
+    id: req.file.assetId,
+    kind: 'video',
+    url,
+    mimeType: req.file.mimetype,
+    size: req.file.size,
+    originalName: req.file.originalname,
+  })
+
+  res.json({ success: true, data: { id: req.file.assetId, url, size: req.file.size } })
+})
+
+router.post('/audio', audioUpload.single('audio'), (req, res) => {
+  if (!req.file) return res.status(400).json({ success: false, error: 'No audio uploaded' })
+
+  const url = `/uploads/audios/${req.file.filename}`
+  registerAsset(db, req.ownerId, {
+    id: req.file.assetId,
+    kind: 'audio',
+    url,
+    mimeType: req.file.mimetype,
+    size: req.file.size,
+    originalName: req.file.originalname,
+  })
+
+  res.json({ success: true, data: { id: req.file.assetId, url, size: req.file.size } })
+})
+
+router.post('/', imageUpload.single('image'), async (req, res, next) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ success: false, error: 'No file uploaded' })
-    }
+    if (!req.file) return res.status(400).json({ success: false, error: 'No file uploaded' })
 
     const id = uuid()
-    const ext = extname(req.file.originalname) || '.jpg'
-    const filename = `${id}${ext}`
+    const filename = `${id}.jpg`
     const thumbFilename = `${id}_thumb.webp`
-
-    const filepath = join(uploadsDir, filename)
-    const thumbPath = join(thumbsDir, thumbFilename)
-
-    // 原图保存（限制最大 2000px 宽/高）
     const processed = await sharp(req.file.buffer)
       .resize(2000, 2000, { fit: 'inside', withoutEnlargement: true })
       .jpeg({ quality: 85, progressive: true })
       .toBuffer()
-
-    writeFileSync(filepath, processed)
-
-    // 缩略图（400px 宽）
     const thumb = await sharp(req.file.buffer)
       .resize(400, 400, { fit: 'cover' })
       .webp({ quality: 75 })
       .toBuffer()
 
-    writeFileSync(thumbPath, thumb)
+    const url = `/uploads/${filename}`
+    const thumbnailUrl = `/uploads/thumbs/${thumbFilename}`
+    writeFileSync(join(uploadsDir, filename), processed)
+    writeFileSync(join(thumbsDir, thumbFilename), thumb)
 
-    res.json({
-      success: true,
-      data: {
-        id,
-        url: `/uploads/${filename}`,
-        thumbnail: `/uploads/thumbs/${thumbFilename}`,
-        size: processed.length,
-      },
+    registerAsset(db, req.ownerId, {
+      id,
+      kind: 'image',
+      url,
+      thumbnailUrl,
+      mimeType: 'image/jpeg',
+      size: processed.length,
+      originalName: req.file.originalname,
     })
+
+    res.json({ success: true, data: { id, url, thumbnail: thumbnailUrl, size: processed.length } })
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message })
+    next(err)
   }
 })
 
-// POST /api/upload/batch — 批量上传
-router.post('/batch', upload.array('images', 6), async (req, res) => {
+router.post('/batch', imageUpload.array('images', 6), async (req, res, next) => {
   try {
-    const files = req.files
-    if (!files || files.length === 0) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({ success: false, error: 'No files uploaded' })
     }
 
-    const results = await Promise.all(
-      files.map(async (file) => {
-        const id = uuid()
-        const filename = `${id}.jpg`
-        const thumbFilename = `${id}_thumb.webp`
+    const results = await Promise.all(req.files.map(async (file) => {
+      const id = uuid()
+      const filename = `${id}.jpg`
+      const thumbFilename = `${id}_thumb.webp`
+      const processed = await sharp(file.buffer)
+        .resize(2000, 2000, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 85, progressive: true })
+        .toBuffer()
+      const thumb = await sharp(file.buffer)
+        .resize(400, 400, { fit: 'cover' })
+        .webp({ quality: 75 })
+        .toBuffer()
 
-        const processed = await sharp(file.buffer)
-          .resize(2000, 2000, { fit: 'inside', withoutEnlargement: true })
-          .jpeg({ quality: 85, progressive: true })
-          .toBuffer()
+      const url = `/uploads/${filename}`
+      const thumbnailUrl = `/uploads/thumbs/${thumbFilename}`
+      writeFileSync(join(uploadsDir, filename), processed)
+      writeFileSync(join(thumbsDir, thumbFilename), thumb)
 
-        writeFileSync(join(uploadsDir, filename), processed)
-
-        const thumb = await sharp(file.buffer)
-          .resize(400, 400, { fit: 'cover' })
-          .webp({ quality: 75 })
-          .toBuffer()
-
-        writeFileSync(join(thumbsDir, thumbFilename), thumb)
-
-        return {
-          id,
-          url: `/uploads/${filename}`,
-          thumbnail: `/uploads/thumbs/${thumbFilename}`,
-          size: processed.length,
-        }
+      registerAsset(db, req.ownerId, {
+        id,
+        kind: 'image',
+        url,
+        thumbnailUrl,
+        mimeType: 'image/jpeg',
+        size: processed.length,
+        originalName: file.originalname,
       })
-    )
+
+      return { id, url, thumbnail: thumbnailUrl, size: processed.length }
+    }))
 
     res.json({ success: true, data: results })
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message })
+    next(err)
   }
 })
 

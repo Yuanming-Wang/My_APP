@@ -8,14 +8,28 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "tsx server/index.ts"
+    "server": "node server/index.js",
+    "server:dev": "node --watch server/index.js",
+    "test": "node --test server/tests/api.test.js",
+    "db:claim-legacy": "node server/scripts/claim-legacy.js",
+    "assets:cleanup": "node server/scripts/cleanup-assets.js",
+    "maintenance": "node server/scripts/maintenance.js"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.108.0",
+    "better-sqlite3": "^13.2.0",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "framer-motion": "^12.12.2",
+    "multer": "^2.0.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-router-dom": "^7.18.5",
+    "sharp": "^0.35.5",
     "tailwind-merge": "^3.3.0",
+    "uuid": "^11.1.0",
+    "zod": "^4.6.7",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

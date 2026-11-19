@@ -1,35 +1,56 @@
-import type { DraftMedia, Book } from '../types'
-import { formatArchiveNo } from './utils'
+import type { BookPage, MediaType } from '../types'
 
-export function generateBook(
+export interface BookPayload {
+  title: string
+  subtitle: string
+  theme: 'years_gold'
+  coverImageUrl: string
+  ownerName: string
+  certificateText: string
+  pages: Array<{
+    pageIndex: number
+    imageUrl: string
+    mediaType: MediaType
+    thumbnailUrl: string
+    audioUrl: string
+    rawStory: string
+    chapterTitle: string
+    polishedStory: string
+  }>
+}
+
+export function buildBookPayload(
   ownerName: string,
-  media: DraftMedia[],
-  serial: number
-): Book {
-  const archiveNo = formatArchiveNo(serial)
-  const firstStory = media[0]?.story || '我的旧时光'
+  pages: BookPage[],
+  coverImageUrl: string
+): BookPayload {
+  const displayName = ownerName || '旧时光用户'
+  const firstStory = pages[0]?.rawStory || '我的旧时光'
 
   return {
-    id: crypto.randomUUID(),
     title: createTitle(firstStory),
     subtitle: '把那些值得想起的日子，珍藏成一本书',
     theme: 'years_gold',
-    coverImageUrl: media[0]?.thumbnailUrl || media[0]?.dataUrl || '',
-    archiveNo,
-    ownerName: ownerName || '旧时光用户',
-    certificateText: `这本纪念册记录了${ownerName || '旧时光用户'}的一段珍贵旧时光。愿每一次翻阅，都能想起那天的温暖。`,
-    shareSlug: archiveNo.toLowerCase(),
-    createdAt: new Date().toISOString().slice(0, 10),
-    pages: media.map((item, i) => ({
-      id: crypto.randomUUID(),
-      pageIndex: i + 1,
-      mediaUrl: item.dataUrl,
-      mediaType: item.type,
-      thumbnailUrl: item.thumbnailUrl,
-      rawStory: item.story,
-      chapterTitle: createChapterTitle(item.story, i, item.needStory),
-      polishedStory: polishStory(item.story, i, item.needStory),
+    coverImageUrl,
+    ownerName: displayName,
+    certificateText: `这本纪念册记录了${displayName}的一段珍贵旧时光。愿每一次翻阅，都能想起那天的温暖。`,
+    pages: pages.map((page) => ({
+      pageIndex: page.pageIndex,
+      imageUrl: page.mediaUrl,
+      mediaType: page.mediaType,
+      thumbnailUrl: page.thumbnailUrl || '',
+      audioUrl: page.audioUrl || '',
+      rawStory: page.rawStory,
+      chapterTitle: page.chapterTitle,
+      polishedStory: page.polishedStory,
     })),
+  }
+}
+
+export function buildPageText(story: string, index: number, needStory?: boolean) {
+  return {
+    chapterTitle: createChapterTitle(story, index, needStory),
+    polishedStory: polishStory(story, index, needStory),
   }
 }
 

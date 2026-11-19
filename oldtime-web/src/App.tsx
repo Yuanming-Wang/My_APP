@@ -1,8 +1,12 @@
-import { useState, useCallback, useEffect, lazy, Suspense } from 'react'
+import { useCallback, useEffect, lazy, Suspense } from 'react'
+import { Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { useStore } from './hooks/useStore'
 import { Toast } from './components/ui/Toast'
 import { ErrorBoundary } from './components/ui/ErrorBoundary'
-import { ROUTES } from './lib/constants'
+import { ROUTES, ROUTE_PATHS } from './lib/constants'
+import { booksApi } from './lib/api'
+import { mapBook } from './lib/mappers'
 
 // 懒加载页面
 const HomePage = lazy(() => import('./components/pages/HomePage').then(m => ({ default: m.HomePage })))
@@ -12,15 +16,6 @@ const GeneratingPage = lazy(() => import('./components/pages/GeneratingPage').th
 const ReaderPage = lazy(() => import('./components/pages/ReaderPage').then(m => ({ default: m.ReaderPage })))
 const SharePage = lazy(() => import('./components/pages/SharePage').then(m => ({ default: m.SharePage })))
 const CollaboratePage = lazy(() => import('./components/pages/CollaboratePage').then(m => ({ default: m.CollaboratePage })))
-
-type View = typeof ROUTES[keyof typeof ROUTES] | 'collaborate'
-
-function getInitialView(): View {
-  const hash = window.location.hash
-  if (hash.startsWith('#/help/')) return 'collaborate'
-  if (hash.startsWith('#/share/')) return ROUTES.READER
-  return ROUTES.HOME
-}
 
 function PageLoader() {
   return (
@@ -33,49 +28,85 @@ function PageLoader() {
   )
 }
 
-export default function App() {
-  const [view, setView] = useState<View>(getInitialView)
-  const toast = useStore((s) => s.toast)
+function BooksSync() {
+  const setBooks = useStore((s) => s.setBooks)
   const loadBooks = useStore((s) => s.loadBooks)
-  const openBookBySlug = useStore((s) => s.openBookBySlug)
+  const { data, isError } = useQuery({
+    queryKey: ['books'],
+    queryFn: async () => {
+      const res = await booksApi.list(1, 50)
+      return res.data.map(mapBook)
+    },
+  })
 
   useEffect(() => {
-    const shareSlug = window.location.hash.match(/^#\/share\/(.+)$/)?.[1]
-    if (!shareSlug) return
+    if (data) setBooks(data)
+  }, [data, setBooks])
 
-    void loadBooks().then(() => {
-      if (!openBookBySlug(decodeURIComponent(shareSlug))) setView(ROUTES.HOME)
-    })
-  }, [loadBooks, openBookBySlug])
+  useEffect(() => {
+    if (isError) void loadBooks()
+  }, [isError, loadBooks])
 
-  const navigate = useCallback((v: string) => {
-    setView(v as View)
+  return null
+}
+
+function SharedReaderRoute({ onNavigate }: { onNavigate: (v: string) => void }) {
+  const { slug } = useParams()
+  const activeBook = useStore((s) => s.getActiveBook())
+  const setSharedBook = useStore((s) => s.setSharedBook)
+  const showToast = useStore((s) => s.showToast)
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['shared-book', slug],
+    queryFn: async () => {
+      const res = await booksApi.getBySlug(slug || '')
+      return mapBook(res.data)
+    },
+    enabled: Boolean(slug),
+    retry: false,
+  })
+
+  useEffect(() => {
+    if (data) setSharedBook(data)
+  }, [data, setSharedBook])
+
+  useEffect(() => {
+    if (isError) {
+      showToast('分享链接已失效')
+      onNavigate(ROUTES.HOME)
+    }
+  }, [isError, showToast, onNavigate])
+
+  if (isPending || isError || !activeBook) return <PageLoader />
+
+  return <ReaderPage onNavigate={onNavigate} />
+}
+
+export default function App() {
+  const navigate = useNavigate()
+  const toast = useStore((s) => s.toast)
+
+  const go = useCallback((v: string) => {
+    navigate(ROUTE_PATHS[v] || ROUTE_PATHS[ROUTES.HOME])
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
-
-  // 协作页面
-  if (view === 'collaborate') {
-    return (
-      <ErrorBoundary>
-        <main className="max-w-[480px] mx-auto min-h-screen bg-[#F8F5EE]">
-          <Suspense fallback={<PageLoader />}>
-            <CollaboratePage />
-          </Suspense>
-        </main>
-      </ErrorBoundary>
-    )
-  }
+  }, [navigate])
 
   return (
     <ErrorBoundary>
       <main className="max-w-[480px] mx-auto min-h-screen bg-[#F8F5EE]">
+        <BooksSync />
         <Suspense fallback={<PageLoader />}>
-          {view === ROUTES.HOME && <HomePage onNavigate={navigate} />}
-          {view === ROUTES.CREATE && <CreatePage onNavigate={navigate} />}
-          {view === ROUTES.STORIES && <StoriesPage onNavigate={navigate} />}
-          {view === ROUTES.GENERATING && <GeneratingPage onNavigate={navigate} />}
-          {view === ROUTES.READER && <ReaderPage onNavigate={navigate} />}
-          {view === ROUTES.SHARE && <SharePage onNavigate={navigate} />}
+          <Routes>
+            <Route path="/" element={<Navigate to={ROUTE_PATHS[ROUTES.HOME]} replace />} />
+            <Route path={ROUTE_PATHS[ROUTES.HOME]} element={<HomePage onNavigate={go} />} />
+            <Route path={ROUTE_PATHS[ROUTES.CREATE]} element={<CreatePage onNavigate={go} />} />
+            <Route path={ROUTE_PATHS[ROUTES.STORIES]} element={<StoriesPage onNavigate={go} />} />
+            <Route path={ROUTE_PATHS[ROUTES.GENERATING]} element={<GeneratingPage onNavigate={go} />} />
+            <Route path={ROUTE_PATHS[ROUTES.READER]} element={<ReaderPage onNavigate={go} />} />
+            <Route path={ROUTE_PATHS[ROUTES.SHARE]} element={<SharePage onNavigate={go} />} />
+            <Route path="/share/:slug" element={<SharedReaderRoute onNavigate={go} />} />
+            <Route path="/help/:draftId" element={<CollaboratePage />} />
+            <Route path="*" element={<Navigate to={ROUTE_PATHS[ROUTES.HOME]} replace />} />
+          </Routes>
         </Suspense>
         {toast && <Toast message={toast} onClose={() => useStore.setState({ toast: '' })} />}
       </main>

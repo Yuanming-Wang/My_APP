@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { PageContainer } from '../layout/PageContainer'
 import { TopBar } from '../layout/TopBar'
@@ -28,8 +29,7 @@ export function CollaboratePage() {
   const [completing, setCompleting] = useState(false)
   const [completed, setCompleted] = useState(false)
 
-  // 从 URL 获取 draftId
-  const draftId = window.location.hash.match(/#\/help\/(.+)/)?.[1]
+  const { draftId } = useParams<{ draftId: string }>()
 
   useEffect(() => {
     if (!draftId) {

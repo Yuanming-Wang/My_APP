@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useStore } from '../../hooks/useStore'
 import { PageContainer } from '../layout/PageContainer'
@@ -20,104 +20,14 @@ function HourglassIcon({ size = 40 }: { size?: number }) {
   )
 }
 
-// 登录页
-function LoginPage({ onLogin }: { onLogin: () => void }) {
-  const [phone, setPhone] = useState('')
-  const [code, setCode] = useState('')
-  const [sent, setSent] = useState(false)
-  const [countdown, setCountdown] = useState(0)
-  const [loading, setLoading] = useState(false)
-
-  const sendCode = () => {
-    if (phone.length !== 11) return
-    setSent(true)
-    setCountdown(60)
-    const t = setInterval(() => {
-      setCountdown(p => { if (p <= 1) { clearInterval(t); return 0 } return p - 1 })
-    }, 1000)
-  }
-
-  const login = async () => {
-    if (loading) return
-    if (code !== '123456') return
-    setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
-    setLoading(false)
-    onLogin()
-  }
-
-  return (
-    <div className="min-h-screen bg-[#F8F5EE] flex items-center justify-center px-6">
-      <div className="w-full max-w-[360px] text-center">
-        {/* 沙漏图标 */}
-        <div className="mb-8">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[#3D1A00] to-[#1A0E08] flex items-center justify-center border border-[rgba(212,175,55,0.3)]">
-            <HourglassIcon size={36} />
-          </div>
-          <h1 className="text-[28px] font-bold text-[#2D2318] font-serif tracking-wider">OldTime</h1>
-          <p className="text-[14px] text-[#A89887] mt-1 font-serif">旧时光 · 新珍藏</p>
-        </div>
-
-        {/* 表单 */}
-        <div className="text-left">
-          <label className="text-[13px] text-[#5A4D3F] mb-2 block font-serif">手机号</label>
-          <div className="flex items-center bg-white border border-[#E5DCD1] rounded-2xl px-4 h-14">
-            <span className="text-[16px] text-[#2D2318] font-serif font-medium">+86</span>
-            <div className="w-px h-6 bg-[#E5DCD1] mx-4" />
-            <input
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
-              placeholder="请输入手机号"
-              className="flex-1 text-[16px] text-[#2D2318] outline-none font-serif"
-              maxLength={11}
-            />
-          </div>
-
-          {sent && (
-            <div className="mt-5">
-              <label className="text-[13px] text-[#5A4D3F] mb-2 block font-serif">验证码</label>
-              <input
-                value={code}
-                onChange={e => setCode(e.target.value)}
-                placeholder="请输入6位验证码"
-                className="w-full bg-white border border-[#E5DCD1] rounded-2xl px-4 h-14 text-[20px] text-[#2D2318] outline-none font-serif tracking-widest text-center"
-                maxLength={6}
-              />
-              <button onClick={sendCode} disabled={countdown > 0} className="text-[13px] text-[#8B4513] mt-2 font-serif">
-                {countdown > 0 ? `${countdown}秒后重发` : '重新发送'}
-              </button>
-            </div>
-          )}
-
-          <button
-            onClick={sent ? login : sendCode}
-            disabled={sent ? code.length !== 6 : phone.length !== 11}
-            className="w-full h-14 bg-[#8B4513] text-white rounded-2xl text-[16px] font-semibold font-serif mt-6 disabled:opacity-40 active:scale-[0.97] transition-transform"
-          >
-            {loading ? '登录中...' : sent ? '登录' : '发送验证码'}
-          </button>
-        </div>
-
-        <p className="text-[11px] text-[#A89887] mt-8 font-serif">登录即表示同意《用户协议》和《隐私政策》</p>
-      </div>
-    </div>
-  )
-}
-
 export function HomePage({ onNavigate }: { onNavigate: (v: string) => void }) {
   const books = useStore((s) => s.books)
-  const loadBooks = useStore((s) => s.loadBooks)
   const deleteBook = useStore((s) => s.deleteBook)
   const [deleteId, setDeleteId] = useState<string | null>(null)
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  useEffect(() => {
-    loadBooks()
-  }, [loadBooks])
 
   const handleDelete = () => {
     if (deleteId) {
-      deleteBook(deleteId)
+      void deleteBook(deleteId)
       setDeleteId(null)
     }
   }
@@ -125,23 +35,11 @@ export function HomePage({ onNavigate }: { onNavigate: (v: string) => void }) {
   const hour = new Date().getHours()
   const greeting = hour < 9 ? '早上好' : hour < 12 ? '上午好' : hour < 14 ? '中午好' : hour < 17 ? '下午好' : '晚上好'
 
-  if (!loggedIn) {
-    return <LoginPage onLogin={() => setLoggedIn(true)} />
-  }
-
   return (
     <PageContainer>
       <TopBar
         title="OldTime"
         icon={<HourglassIcon size={24} />}
-        right={
-          <button
-            onClick={() => onNavigate('profile')}
-            className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8B4513] to-[#D4AF37] flex items-center justify-center overflow-hidden"
-          >
-            <span className="text-white text-sm font-medium font-serif">我</span>
-          </button>
-        }
       />
 
       <div className="px-4 py-4 space-y-4">

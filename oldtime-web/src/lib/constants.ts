@@ -9,7 +9,7 @@ export const APP_SLOGAN = '旧时光，新珍藏'
 export const APP_DESCRIPTION = '让每一位老人都能拥有一本值得珍藏的数字纪念册'
 
 // 限制
-export const MAX_PHOTOS = 200
+export const MAX_PHOTOS = 12
 export const MAX_VIDEOS = 10
 export const MAX_PHOTO_SIZE_MB = 50
 export const MAX_VIDEO_SIZE_MB = 500
@@ -33,6 +33,15 @@ export const ROUTES = {
   READER: 'reader',
   SHARE: 'share',
 } as const
+
+export const ROUTE_PATHS: Record<string, string> = {
+  [ROUTES.HOME]: '/home',
+  [ROUTES.CREATE]: '/create',
+  [ROUTES.STORIES]: '/stories',
+  [ROUTES.GENERATING]: '/generating',
+  [ROUTES.READER]: '/reader',
+  [ROUTES.SHARE]: '/share',
+}
 
 // 存储键
 export const STORAGE_KEY = 'oldtime-books-v1'

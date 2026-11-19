@@ -1,6 +1,9 @@
 import { create } from 'zustand'
-import type { Book, DraftMedia } from '../types'
-import { generateBook } from '../lib/generator'
+import type { AudioRecording, Book, BookPage, DraftMedia } from '../types'
+import { buildBookPayload, buildPageText } from '../lib/generator'
+import { booksApi } from '../lib/api'
+import { uploadDraftMedia } from '../lib/media'
+import { mapBook } from '../lib/mappers'
 import { MAX_PHOTOS, MAX_VIDEOS, TOAST_DURATION } from '../lib/constants'
 
 interface AppState {
@@ -17,14 +20,17 @@ interface AppState {
   removeMedia: (id: string) => void
   updateStory: (id: string, story: string) => void
   toggleNeedStory: (id: string) => void
+  setMediaAudio: (id: string, audio: AudioRecording | null) => void
   clearDraft: () => void
   generate: () => Promise<Book | undefined>
   openBook: (id: string) => void
-  openBookBySlug: (slug: string) => boolean
+  loadSharedBook: (slug: string) => Promise<boolean>
   setActivePage: (page: number) => void
   showToast: (msg: string) => void
   deleteBook: (id: string) => Promise<void>
   loadBooks: () => Promise<void>
+  setBooks: (books: Book[]) => void
+  setSharedBook: (book: Book) => void
   getActiveBook: () => Book | undefined
 }
 
@@ -83,10 +89,13 @@ export const useStore = create<AppState>()((set, get) => ({
     }
   },
 
-  removeMedia: (id) =>
+  removeMedia: (id) => {
+    const target = get().draftMedia.find((m) => m.id === id)
+    if (target?.audioUrl?.startsWith('blob:')) URL.revokeObjectURL(target.audioUrl)
     set((s) => ({
       draftMedia: s.draftMedia.filter((m) => m.id !== id),
-    })),
+    }))
+  },
 
   updateStory: (id, story) =>
     set((s) => ({
@@ -100,18 +109,64 @@ export const useStore = create<AppState>()((set, get) => ({
       ),
     })),
 
-  clearDraft: () => set({ draftMedia: [], ownerName: '' }),
+  setMediaAudio: (id, audio) =>
+    set((s) => ({
+      draftMedia: s.draftMedia.map((m) =>
+        m.id === id
+          ? {
+              ...m,
+              audioFile: audio?.file,
+              audioUrl: audio?.url,
+              audioDuration: audio?.duration,
+            }
+          : m
+      ),
+    })),
+
+  clearDraft: () => {
+    get().draftMedia.forEach((m) => {
+      if (m.audioUrl?.startsWith('blob:')) URL.revokeObjectURL(m.audioUrl)
+    })
+    set({ draftMedia: [], ownerName: '' })
+  },
 
   generate: async () => {
-    try {
-      const { draftMedia, ownerName, books } = get()
-      if (draftMedia.length === 0) return undefined
+    const { draftMedia, ownerName } = get()
+    if (draftMedia.length === 0) return undefined
 
+    try {
       set({ loading: true })
-      const book = generateBook(ownerName, draftMedia, books.length + 1)
+
+      const pages: BookPage[] = []
+      for (let i = 0; i < draftMedia.length; i++) {
+        const media = draftMedia[i]
+        const uploaded = await uploadDraftMedia(media)
+        const text = buildPageText(media.story, i, media.needStory)
+
+        pages.push({
+          id: crypto.randomUUID(),
+          pageIndex: i + 1,
+          mediaUrl: uploaded.url,
+          mediaType: media.type,
+          thumbnailUrl: uploaded.thumbnail,
+          audioUrl: uploaded.audioUrl,
+          rawStory: media.story,
+          chapterTitle: text.chapterTitle,
+          polishedStory: text.polishedStory,
+        })
+      }
+
+      const coverImageUrl = pages[0]?.thumbnailUrl || pages[0]?.mediaUrl || ''
+      const payload = buildBookPayload(ownerName, pages, coverImageUrl)
+      const res = await booksApi.create(payload)
+      const book = mapBook(res.data)
+
+      draftMedia.forEach((m) => {
+        if (m.audioUrl?.startsWith('blob:')) URL.revokeObjectURL(m.audioUrl)
+      })
 
       set((s) => ({
-        books: [book, ...s.books],
+        books: [book, ...s.books.filter((item) => item.id !== book.id)],
         activeBookId: book.id,
         activePage: 0,
         draftMedia: [],
@@ -121,17 +176,33 @@ export const useStore = create<AppState>()((set, get) => ({
       return book
     } catch (err) {
       console.error('生成书籍失败:', err)
-      get().showToast('生成失败，请重试。')
+      get().showToast(err instanceof Error ? err.message : '生成失败，请重试。')
       set({ loading: false })
+      return undefined
     }
   },
 
   openBook: (id) => set({ activeBookId: id, activePage: 0 }),
-  openBookBySlug: (slug) => {
-    const book = get().books.find((item) => item.shareSlug === slug)
-    if (!book) return false
-    set({ activeBookId: book.id, activePage: 0 })
-    return true
+  loadSharedBook: async (slug) => {
+    const local = get().books.find((item) => item.shareSlug === slug)
+    if (local) {
+      set({ activeBookId: local.id, activePage: 0 })
+      return true
+    }
+
+    try {
+      const res = await booksApi.getBySlug(slug)
+      const book = mapBook(res.data)
+      set((s) => ({
+        books: [book, ...s.books.filter((item) => item.id !== book.id)],
+        activeBookId: book.id,
+        activePage: 0,
+      }))
+      return true
+    } catch (err) {
+      console.error('加载分享书籍失败:', err)
+      return false
+    }
   },
   setActivePage: (page) => set({ activePage: page }),
 
@@ -141,32 +212,51 @@ export const useStore = create<AppState>()((set, get) => ({
   },
 
   deleteBook: async (id) => {
+    let synced = true
     try {
-      set((s) => ({
-        books: s.books.filter((b) => b.id !== id),
-        activeBookId: s.activeBookId === id ? null : s.activeBookId,
-      }))
-      get().showToast('藏品已删除')
+      await booksApi.delete(id)
     } catch (err) {
-      console.error('删除失败:', err)
-      get().showToast('删除失败，请重试。')
+      console.error('云端删除失败:', err)
+      synced = false
     }
+
+    set((s) => ({
+      books: s.books.filter((b) => b.id !== id),
+      activeBookId: s.activeBookId === id ? null : s.activeBookId,
+    }))
+    get().showToast(synced ? '藏品已删除' : '已从本机删除，云端同步失败')
   },
 
   loadBooks: async () => {
     try {
       set({ loading: true })
-      const stored = localStorage.getItem('oldtime-books')
-      if (stored) {
-        set({ books: JSON.parse(stored), loading: false })
-      } else {
+      const res = await booksApi.list(1, 50)
+      set({ books: res.data.map(mapBook), loading: false })
+    } catch (err) {
+      console.error('加载云端书籍失败:', err)
+      try {
+        const stored = localStorage.getItem('oldtime-books')
+        set({ books: stored ? JSON.parse(stored) : [], loading: false })
+      } catch {
         set({ loading: false })
       }
-    } catch (err) {
-      console.error('加载书籍失败:', err)
-      set({ loading: false })
     }
   },
+
+  setBooks: (books) =>
+    set((s) => {
+      if (!s.activeBookId) return { books }
+      const active = s.books.find((book) => book.id === s.activeBookId)
+      if (!active || books.some((book) => book.id === active.id)) return { books }
+      return { books: [active, ...books] }
+    }),
+
+  setSharedBook: (book) =>
+    set((s) => ({
+      books: [book, ...s.books.filter((item) => item.id !== book.id)],
+      activeBookId: book.id,
+      activePage: 0,
+    })),
 
   getActiveBook: () => {
     const { books, activeBookId } = get()
@@ -176,7 +266,11 @@ export const useStore = create<AppState>()((set, get) => ({
 
 // 保存到 localStorage
 useStore.subscribe((state) => {
-  localStorage.setItem('oldtime-books', JSON.stringify(state.books))
+  try {
+    localStorage.setItem('oldtime-books', JSON.stringify(state.books))
+  } catch (err) {
+    console.error('本地缓存失败:', err)
+  }
 })
 
 // 处理图片
@@ -186,6 +280,7 @@ async function processImage(file: File): Promise<DraftMedia> {
     id: crypto.randomUUID(),
     type: 'image',
     dataUrl: await fileToDataUrl(compressed),
+    file: compressed,
     story: '',
     needStory: true,
   }
@@ -193,14 +288,16 @@ async function processImage(file: File): Promise<DraftMedia> {
 
 // 处理视频
 async function processVideo(file: File): Promise<DraftMedia> {
-  const dataUrl = await fileToDataUrl(file)
+  const id = crypto.randomUUID()
   const thumbnail = await generateVideoThumbnail(file)
 
   return {
-    id: crypto.randomUUID(),
+    id,
     type: 'video',
-    dataUrl,
+    dataUrl: URL.createObjectURL(file),
     thumbnailUrl: thumbnail,
+    file,
+    thumbnailFile: await dataUrlToFile(thumbnail, `${id}-thumb.jpg`),
     story: '',
     needStory: true,
     duration: await getVideoDuration(file),
@@ -287,4 +384,10 @@ function fileToDataUrl(file: File): Promise<string> {
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
+}
+
+async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
+  const res = await fetch(dataUrl)
+  const blob = await res.blob()
+  return new File([blob], filename, { type: blob.type || 'image/jpeg' })
 }

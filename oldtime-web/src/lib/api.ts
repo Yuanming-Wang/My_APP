@@ -29,6 +29,9 @@ export const booksApi = {
   get: (id: string) =>
     request<{ success: boolean; data: any }>(`/books/${id}`),
 
+  getBySlug: (slug: string) =>
+    request<{ success: boolean; data: any }>(`/books/slug/${encodeURIComponent(slug)}`),
+
   create: (book: any) =>
     request<{ success: boolean; data: any }>('/books', {
       method: 'POST',
@@ -70,6 +73,40 @@ export const uploadApi = {
     if (!res.ok) {
       const error = await res.json().catch(() => ({ error: '批量上传失败' }))
       throw new Error(error.error || '批量上传失败')
+    }
+
+    return res.json()
+  },
+
+  video: async (file: File): Promise<{ success: boolean; data: { url: string } }> => {
+    const formData = new FormData()
+    formData.append('video', file)
+
+    const res = await fetch(`${API_BASE}/upload/video`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({ error: '视频上传失败' }))
+      throw new Error(error.error || '视频上传失败')
+    }
+
+    return res.json()
+  },
+
+  audio: async (file: File): Promise<{ success: boolean; data: { url: string } }> => {
+    const formData = new FormData()
+    formData.append('audio', file)
+
+    const res = await fetch(`${API_BASE}/upload/audio`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({ error: '录音上传失败' }))
+      throw new Error(error.error || '录音上传失败')
     }
 
     return res.json()

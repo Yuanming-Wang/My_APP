@@ -112,6 +112,12 @@ export function ReaderPage({ onNavigate }: { onNavigate: (v: string) => void }) 
         <div className="p-5">
           <h3 className="text-[16px] font-medium text-[#1A1A1A] mb-3">{pageData.chapterTitle}</h3>
           <p className="text-[15px] text-[#666] leading-[1.8]">{pageData.polishedStory}</p>
+          {pageData.audioUrl && (
+            <div className="mt-4 pt-4 border-t border-[#E8E8E8]">
+              <p className="text-[12px] text-[#999] mb-2">原声讲述</p>
+              <audio controls preload="metadata" src={pageData.audioUrl} className="w-full" />
+            </div>
+          )}
         </div>
       </Card>
     )

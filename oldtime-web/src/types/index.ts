@@ -6,9 +6,20 @@ export interface DraftMedia {
   type: MediaType
   dataUrl: string
   thumbnailUrl?: string // 视频封面
+  file?: File
+  thumbnailFile?: File
+  audioUrl?: string
+  audioFile?: File
+  audioDuration?: number
   story: string
   needStory: boolean
   duration?: number // 视频时长(秒)
+}
+
+export interface AudioRecording {
+  file: File
+  url: string
+  duration: number
 }
 
 export interface BookPage {
@@ -17,6 +28,7 @@ export interface BookPage {
   mediaUrl: string
   mediaType: MediaType
   thumbnailUrl?: string
+  audioUrl?: string
   rawStory: string
   chapterTitle: string
   polishedStory: string
